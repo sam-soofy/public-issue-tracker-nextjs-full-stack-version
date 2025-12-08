@@ -5,7 +5,6 @@ import {
   uuid,
   text,
   pgEnum,
-  unique,
   uniqueIndex,
   index,
 } from "drizzle-orm/pg-core";

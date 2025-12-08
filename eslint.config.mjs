@@ -13,16 +13,16 @@ const eslintConfig = defineConfig([
     "build/**",
     "next-env.d.ts",
   ]),
-  js.configs.recommended,
   {
     rules: {
       // Enforce double quotes
-      "quotes": ["error", "double", { "avoidEscape": true, "allowTemplateLiterals": true }],
-      
-      // Optional: fix inconsistent quote usage in the same file
-      "@stylistic/quotes": ["error", "double", { "avoidEscape": true, "allowTemplateLiterals": true }]
-    }
-  }
+      quotes: [
+        "error",
+        "double",
+        { avoidEscape: true, allowTemplateLiterals: true },
+      ],
+    },
+  },
 ]);
 
 export default eslintConfig;

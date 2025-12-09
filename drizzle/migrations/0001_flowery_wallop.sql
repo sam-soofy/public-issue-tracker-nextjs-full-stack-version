@@ -1,0 +1,1 @@
+ALTER TABLE "issue" ALTER COLUMN "description" DROP NOT NULL;

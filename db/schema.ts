@@ -52,7 +52,7 @@ export const IssueStatus = pgEnum("issue_status", [
 export const IssuesTable = pgTable("issue", {
   id: uuid("id").primaryKey().defaultRandom(),
   title: varchar("title", { length: 120 }).notNull(),
-  description: text("description").notNull(),
+  description: text("description"),
   status: IssueStatus("issue_status").default("TODO").notNull(),
   created_at: timestamp("created_at").defaultNow().notNull(),
   updated_at: timestamp("updated_at").defaultNow().notNull(),

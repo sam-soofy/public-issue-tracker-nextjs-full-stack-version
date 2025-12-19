@@ -11,6 +11,9 @@ import {
   FieldSet,
 } from "@/components/ui/field";
 import { Input } from "@/components/ui/input";
+import { useForm, Controller } from "react-hook-form";
+import axios from "axios";
+import { useRouter } from "next/navigation";
 import "easymde/dist/easymde.min.css";
 
 const SimpleMDE = dynamic(() => import("react-simplemde-editor"), {
@@ -21,7 +24,14 @@ type NewIssueFormProps = {
   onCancel?: () => void;
 };
 
+interface NewIssue {
+  title: string;
+  description: string;
+}
+
 export const NewIssueForm = ({ onCancel }: NewIssueFormProps) => {
+  const router = useRouter();
+  const { register, control, handleSubmit } = useForm<NewIssue>();
   const handleCancel = () => {
     if (onCancel) {
       onCancel();
@@ -29,7 +39,13 @@ export const NewIssueForm = ({ onCancel }: NewIssueFormProps) => {
   };
 
   return (
-    <form>
+    <form
+      onSubmit={handleSubmit(async (data) => {
+        const res = await axios.post("/api/issues", data);
+        console.log(res.data);
+        router.push("/issues");
+      })}
+    >
       <FieldGroup>
         <FieldSet>
           <FieldLegend>Add a New Issue</FieldLegend>
@@ -41,21 +57,34 @@ export const NewIssueForm = ({ onCancel }: NewIssueFormProps) => {
             <FieldLabel htmlFor="submit-form-new-issue-title">
               The New Issue Title (Max 120 Characters)
             </FieldLabel>
-            <Input
-              id="submit-form-new-issue-title"
-              placeholder={`Bug fix: Can't refresh access token with "Auth" system.`}
-              required
-              maxLength={120}
+            <Controller
+              name="title"
+              control={control}
+              render={({ field }) => {
+                return <Input
+                  id="submit-form-new-issue-title"
+                  placeholder={`Bug fix: Can't refresh access token with "Auth" system.`}
+                  required
+                  maxLength={120}
+                  {...field}
+                />;
+              }}
             />
           </Field>
           <Field>
             <FieldLabel htmlFor="submit-form-new-issue-description">
               The New Issue Description (Optional)
             </FieldLabel>
-            <SimpleMDE
-              id="submit-form-new-issue-description"
-              placeholder="Add any additional comments and details that is helpful.."
-              className="resize-none"
+            <Controller
+              name="description"
+              control={control}
+              render={({ field }) => {
+                return <SimpleMDE
+                  id="submit-form-new-issue-description"
+                  placeholder="Add any additional comments and details that is helpful.."
+                  className="resize-none"
+                  {...field}
+                />;              }}
             />
           </Field>
         </FieldSet>

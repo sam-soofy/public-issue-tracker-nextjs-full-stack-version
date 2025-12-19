@@ -21,15 +21,17 @@ const Issues = () => {
         <DialogTrigger asChild>
           <Button>Add a New Issue</Button>
         </DialogTrigger>
-        <DialogContent className="max-w-lg">
-          <DialogHeader>
+        <DialogContent className="max-w-lg max-h-[90vh] flex flex-col overflow-hidden">
+          <DialogHeader className="shrink-0">
             <DialogTitle>Add a New Issue</DialogTitle>
             <DialogDescription>
               Create a new issue. You can edit or delete it later from the
               dashboard.
             </DialogDescription>
           </DialogHeader>
-          <NewIssueForm onCancel={() => setOpen(false)} />
+          <div className="min-h-0 flex-1 overflow-y-auto">
+            <NewIssueForm onCancel={() => setOpen(false)} />
+          </div>
         </DialogContent>
       </Dialog>
     </div>

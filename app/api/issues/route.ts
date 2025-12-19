@@ -1,10 +1,11 @@
-import { NextRequest, NextResponse } from "next/server";
+import { NextRequest } from "next/server";
 import { z } from "zod";
 import { db } from "@/db";
 import { IssuesTable } from "@/db/schema";
+import { apiError, apiResponse } from "@/lib/api-response";
 
 export const IssuePostBody = z.object({
-  title: z.string().trim().min(1).max(120),
+  title: z.string().trim().min(2, "Title is required").max(120),
   description: z.string().trim().max(1000).optional(),
 });
 
@@ -47,13 +48,7 @@ export async function POST(req: NextRequest) {
   const validation = IssuePostBody.safeParse(body);
   if (!validation.success) {
     const invalidFields = validation.error.issues[0].path.join(", ");
-    return NextResponse.json(
-      {
-        status: "error",
-        message: validation.error.issues[0].message + " : " + invalidFields,
-      },
-      { status: 400 },
-    );
+    return apiError(validation.error.issues[0].message + " : " + invalidFields, 400);
   }
 
   // Creating the Issue on DB
@@ -62,13 +57,7 @@ export async function POST(req: NextRequest) {
     .values(validation.data)
     .returning();
 
-  return NextResponse.json(
-    {
-      status: "success",
-      data: newIssue,
-    },
-    { status: 201 },
-  );
+  return apiResponse(newIssue, 201);
 }
 
 /**
@@ -86,13 +75,7 @@ export async function GET(req: NextRequest) {
     orderBy: (issues, funcs) => funcs[dateSort](issues.created_at),
   });
 
-  return NextResponse.json(
-    {
-      status: "success",
-      data: issues,
-    },
-    { status: 200 },
-  );
+  return apiResponse(issues, 200);
 }
 
 /**

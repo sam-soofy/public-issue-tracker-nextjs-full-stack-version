@@ -34,7 +34,7 @@ export const NewIssueForm = ({ onCancel }: NewIssueFormProps) => {
   const { register, control, handleSubmit } = useForm<NewIssue>();
   const handleCancel = () => {
     if (onCancel) {
-      onCancel();
+      onCancel(); 
     }
   };
 

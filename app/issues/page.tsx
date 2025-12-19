@@ -10,11 +10,14 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog";
 import { NewIssueForm } from "@/components/issues/submit-form";
+import { useState } from "react";
 
 const Issues = () => {
+  const [open, setOpen] = useState(false);
+
   return (
     <div>
-      <Dialog>
+      <Dialog open={open} onOpenChange={setOpen}>
         <DialogTrigger asChild>
           <Button>Add a New Issue</Button>
         </DialogTrigger>
@@ -26,7 +29,7 @@ const Issues = () => {
               dashboard.
             </DialogDescription>
           </DialogHeader>
-          <NewIssueForm />
+          <NewIssueForm onCancel={() => setOpen(false)} />
         </DialogContent>
       </Dialog>
     </div>

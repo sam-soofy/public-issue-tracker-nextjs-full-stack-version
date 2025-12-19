@@ -25,6 +25,7 @@ const SimpleMDE = dynamic(() => import("react-simplemde-editor"), {
 
 type NewIssueFormProps = {
   onCancel?: () => void;
+  isDialog?: boolean;
 };
 
 interface NewIssue {
@@ -32,7 +33,10 @@ interface NewIssue {
   description: string;
 }
 
-export const NewIssueForm = ({ onCancel }: NewIssueFormProps) => {
+export const NewIssueForm = ({
+  onCancel,
+  isDialog = true,
+}: NewIssueFormProps) => {
   const router = useRouter();
   const { control, handleSubmit } = useForm<NewIssue>();
 
@@ -46,7 +50,7 @@ export const NewIssueForm = ({ onCancel }: NewIssueFormProps) => {
 
   return (
     <form
-      className="flex flex-col min-h-0 gap-4"
+      className={isDialog ? "flex flex-col min-h-0 gap-4" : ""}
       onSubmit={handleSubmit(async (data) => {
         try {
           const res = await axios.post("/api/issues", data);
@@ -66,9 +70,9 @@ export const NewIssueForm = ({ onCancel }: NewIssueFormProps) => {
         }
       })}
     >
-      <div className="flex-1 min-h-0 space-y-4">
+      <div className={isDialog ? "flex-1 min-h-0 space-y-4" : ""}>
         {error && (
-          <Alert variant="destructive">
+          <Alert variant="destructive" className={isDialog ? "" : "mb-4"}>
             <AlertCircleIcon />
             <AlertTitle>Failed to create issue!</AlertTitle>
             <AlertDescription>{error}</AlertDescription>
@@ -127,7 +131,13 @@ export const NewIssueForm = ({ onCancel }: NewIssueFormProps) => {
         </FieldGroup>
       </div>
 
-      <div className="shrink-0 flex items-center gap-3 border-t pt-4 bg-background sticky bottom-0">
+      <div
+        className={
+          isDialog
+            ? "shrink-0 flex items-center gap-3 border-t pt-4 bg-background sticky bottom-0"
+            : ""
+        }
+      >
         <Button type="submit">Submit</Button>
         <Button type="button" variant="outline" onClick={handleCancel}>
           Cancel

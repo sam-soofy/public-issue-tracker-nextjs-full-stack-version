@@ -11,7 +11,7 @@ const NewIssue = () => {
   }
   return (
     <div className="w-full max-w-lg ml-auto mr-auto">
-      <NewIssueForm onCancel={handleCancel} />
+      <NewIssueForm onCancel={handleCancel} isDialog={false} />
     </div>
   );
 };
